@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import ValueType from "react-select";
+import { leadCreate } from "../../api/lead";
 
 interface Option {
   value: string;
@@ -10,31 +11,26 @@ interface Location {
   value: string;
   label: string;
 }
- interface Coldrinks {
+interface Coldrinks {
   value: string;
   label: string;
- }
+}
 export default () => {
-  //   const colourOptions = [
-  //     { value: "chocolate", label: "Chocolate" },
-  //     { value: "strawberry", label: "Strawberry" },
-  //     { value: "vanilla", label: "Vanilla" },
-  //   ];
-  const [options, setOptions] = useState<Option[]>([
-    { value: "SHRI LAXMI KIRANA", label: "SHRI LAXMI KIRANA" },
-    { value: "TAJ PAN SHOP", label: "TAJ PAN SHOP" },
-    { value: "SAJID KIRANA", label: "SAJID KIRANA" },
-  ]);
-  const [locations, setLoactions] = useState<Location[]>([
-    { value: "JUNA PEDGAON", label: "JUNA PEDGAON" },
-    { value: "JUNA PEDGAON", label: "JUNA PEDGAON" },
-    { value: "JUNA PEDGAON", label: "JUNA PEDGAON" },
-  ]);
-  const [coldrink, setColdrink] = useState<Coldrinks[]>([
-    
-      { value: "ice cream", label: "Ice Cream" },
-    
-  ])
+  const [options, setOptions] = useState<Option[]>([]);
+  const [locations, setLoactions] = useState<Location[]>([]);
+  const [products, setProducts] = useState<Coldrinks[]>([]);
+  const [mobile, setMobile] = useState<any>("");
+  const [feedback, setFeedback] = useState<string>("");
+
+  const opt = options.map((itm) => itm.value);
+  const loc = locations.map((lc) => lc.value);
+  const prod = products.map((prod) => prod.value);
+
+  console.log(opt.toString());
+  console.log(loc);
+  console.log(prod);
+  console.log(mobile);
+  console.log(feedback);
 
   const handleChangeRoute = (
     newValue: ValueType<Option, false>,
@@ -48,26 +44,43 @@ export default () => {
       setOptions([...options, newOption]);
     }
   };
-const handleChangeLocation = ( newValue: ValueType<Location, false>,
-  actionMeta: { action: string }) => {
+
+  const handleChangeLocation = (
+    newValue: ValueType<Location, false>,
+    actionMeta: { action: string }
+  ) => {
     if (actionMeta.action === "create-option" && newValue) {
       const newLocation: Location = {
         value: newValue.value,
         label: newValue.label || "",
       };
-      setLoactions([...locations, newLocation])
-}
-  }
-  const handleChangeIcecream = (newValue: ValueType<Coldrinks, false>,
-    actionMeta: { action: string }) => {
-      if (actionMeta.action === "create-option" && newValue) {
-        const newColdrink: Coldrinks = {
-          value: newValue.value,
-          label: newValue.label || "",
-        };
-        setColdrink([...coldrink, newColdrink])
-  }
-  }
+      setLoactions([...locations, newLocation]);
+    }
+  };
+
+  const handleChangeIcecream = (
+    newValue: ValueType<Coldrinks, false>,
+    actionMeta: { action: string }
+  ) => {
+    if (actionMeta.action === "create-option" && newValue) {
+      const newColdrink: Coldrinks = {
+        value: newValue.value,
+        label: newValue.label || "",
+      };
+      setProducts([...products, newColdrink]);
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    return await leadCreate({
+      route_name: opt.toString(),
+      _location: loc.toString(),
+      phone_no: mobile,
+      remarks: feedback,
+      products: prod,
+    });
+  };
+
   return (
     <div className="container-fluid">
       <ul className="nav nav-tabs">
@@ -78,15 +91,18 @@ const handleChangeLocation = ( newValue: ValueType<Location, false>,
         </li>
       </ul>
       <div className="border border-top-0 p-4">
-        <form className="needs-validation g-2 row" noValidate>
+        <form
+          className="needs-validation g-2 row"
+          noValidate
+          onSubmit={handleSubmit}
+        >
           <div className="form-floating">
-            {/* <input type="text" className="form-control" id="route_nameText" placeholder="placeholder" /> */}
-            {/* <label htmlFor="route_nameText" className="form-label">Route Name</label> */}
             <CreatableSelect
               isClearable
               options={options}
+              // value={options}
               onChange={handleChangeRoute}
-              placeholder="Create Your product"
+              placeholder="Create Your Route"
               styles={{
                 control: (baseStyles, state) => ({
                   ...baseStyles,
@@ -117,18 +133,9 @@ const handleChangeLocation = ( newValue: ValueType<Location, false>,
             />
           </div>
           <div className="form-floating">
-            {/* <input
-              type="text"
-              className="form-control"
-              id="location_nameText"
-              placeholder="placeholder"
-            />
-            <label htmlFor="location_nameText" className="form-label">
-              Location Name
-            </label> */}
             <CreatableSelect
               isClearable
-              options={locations}
+              // options={locations}
               onChange={handleChangeLocation}
               placeholder="Location"
               styles={{
@@ -166,6 +173,7 @@ const handleChangeLocation = ( newValue: ValueType<Location, false>,
               className="form-control"
               id="phone_noText"
               placeholder="placeholder"
+              onChange={(e) => setMobile(e.target.value)}
             />
             <label htmlFor="phone_noText" className="form-label">
               Phone Number
@@ -177,6 +185,7 @@ const handleChangeLocation = ( newValue: ValueType<Location, false>,
               className="form-control"
               id="feedbackText"
               placeholder="placeholder"
+              onChange={(e) => setFeedback(e.target.value)}
             />
             <label htmlFor="feedbackText" className="form-label">
               Feedback/Reason
@@ -187,9 +196,9 @@ const handleChangeLocation = ( newValue: ValueType<Location, false>,
               Cold Drinks/Ice cream
             </label>
             <CreatableSelect
-              isMulti
+              // isMulti
               isClearable
-              options={coldrink}
+              options={products}
               onChange={handleChangeIcecream}
               styles={{
                 control: (baseStyles, state) => ({
@@ -207,7 +216,9 @@ const handleChangeLocation = ( newValue: ValueType<Location, false>,
             />
           </div>
           <div>
-            <button className="btn btn-primary">Submit</button>
+            <button className="btn btn-primary" type="submit">
+              Submit
+            </button>
           </div>
         </form>
       </div>
