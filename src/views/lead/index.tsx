@@ -26,12 +26,6 @@ export default () => {
   const loc = locations.map((lc) => lc.value);
   const prod = products.map((prod) => prod.value);
 
-  console.log(opt.toString());
-  console.log(loc);
-  console.log(prod);
-  console.log(mobile);
-  console.log(feedback);
-
   const handleChangeRoute = (
     newValue: ValueType<Option, false>,
     actionMeta: { action: string }
@@ -109,6 +103,7 @@ export default () => {
                   backgroundColor: "#212529",
                   borderColor: "#495057",
                   color: "#fff !important",
+                  padding: "10px",
                 }),
                 option: (styles) => ({
                   ...styles,
@@ -127,6 +122,10 @@ export default () => {
                 }),
                 singleValue: (styles) => ({
                   ...styles,
+                  color: "#fff",
+                }),
+                input: (provided, state) => ({
+                  ...provided,
                   color: "#fff",
                 }),
               }}
@@ -144,6 +143,7 @@ export default () => {
                   backgroundColor: "#212529",
                   borderColor: "#495057",
                   color: "#fff !important",
+                  padding: "10px",
                 }),
                 option: (styles) => ({
                   ...styles,
@@ -164,6 +164,10 @@ export default () => {
                   ...styles,
                   color: "#fff",
                 }),
+                input: (provided, state) => ({
+                  ...provided,
+                  color: "#fff",
+                }),
               }}
             />
           </div>
@@ -175,7 +179,7 @@ export default () => {
               placeholder="placeholder"
               onChange={(e) => setMobile(e.target.value)}
             />
-            <label htmlFor="phone_noText" className="form-label">
+            <label htmlFor="phone_noText" className="form-label ms-2">
               Phone Number
             </label>
           </div>
@@ -187,7 +191,7 @@ export default () => {
               placeholder="placeholder"
               onChange={(e) => setFeedback(e.target.value)}
             />
-            <label htmlFor="feedbackText" className="form-label">
+            <label htmlFor="feedbackText" className="form-label ms-2">
               Feedback/Reason
             </label>
           </div>
@@ -203,14 +207,37 @@ export default () => {
               styles={{
                 control: (baseStyles, state) => ({
                   ...baseStyles,
+                  color: "#fff !important",
                   backgroundColor: "#212529",
-                  borderColor: "#495057",
+                  padding: "10px",
                 }),
                 option: (styles) => ({
                   ...styles,
                   backgroundColor: "#212529",
                   color: "#dee2e6",
                   ":hover": { color: "#dee2e6", backgroundColor: "#343a40" },
+                }),
+                placeholder: (styles) => ({
+                  ...styles,
+                  color: "#fff",
+                }),
+                input: (provided, state) => ({
+                  ...provided,
+                  color: "#fff",
+                }),
+                multiValue: (base, state) => {
+                  return {
+                    ...base,
+                    color: "#fff",
+                  };
+                },
+                multiValueLabel: (base, state) => ({
+                  ...base,
+                  color: "#fff",
+                }),
+                singleValue: (styles) => ({
+                  ...styles,
+                  color: "#fff",
                 }),
               }}
             />

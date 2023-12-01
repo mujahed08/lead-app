@@ -72,7 +72,7 @@ export default () => {
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
                   <label htmlFor="route-name ">
-                    <span className="bi bi-shop text-primary"></span><span className="ms-2">Route Name</span> 
+                    <span className="bi bi-shop text-primary"></span><span className="ms-2 text-primary">Route Name</span> 
                     </label>
                   <p>
                     <strong className=" "><span className="ms-1 ">{lead.route_name}</span></strong>
@@ -80,7 +80,7 @@ export default () => {
                 </li>
                 <li className="list-group-item">
                   <label htmlFor="route-name">
-                    <span className="bi bi-geo-alt-fill text-primary "></span><span className="ms-1"> Location</span></label>
+                    <span className="bi bi-geo-alt-fill text-primary "></span><span className="ms-1 text-primary"> Location</span></label>
                   <p>
                     <strong>{lead._location}</strong>
                   </p>
@@ -88,7 +88,7 @@ export default () => {
                 <li className="list-group-item">
                   <label htmlFor="route-name">
                     <span className="bi bi-telephone-fill text-primary"></span>
-                   <span className="ms-2">Phone Number</span> </label>
+                   <span className="ms-2 text-primary">Phone Number</span> </label>
                   <p>
                     <strong>{lead.phone_no}</strong>
                   </p>
@@ -96,7 +96,7 @@ export default () => {
                 <li className="list-group-item">
                   <label htmlFor="route-name">
                     <span className="bi bi-cart-check-fill text-primary"></span>
-                   <span className="ms-2">Cold drinks/Ice cream</span> </label>
+                   <span className="ms-2 text-primary">Cold drinks/Ice cream</span> </label>
                   <p>
                     {JSON.parse(lead?.products)?.map((it: any) => (
                       <span className="badge text-bg-success ms-2">{it}</span>
