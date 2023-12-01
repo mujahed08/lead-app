@@ -9,7 +9,7 @@ export default () => {
         setLoginFailed(!loginFailed)
     }
 
-    const { register, formState: { errors }, handleSubmit, setValue } = useForm();
+    const { register, formState: { errors }, handleSubmit  } = useForm(); //, setValue
 
     return <div className="my-4 p-4 col-xs-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 border">
     <h3>Login</h3>

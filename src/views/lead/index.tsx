@@ -39,7 +39,7 @@ export default () => {
                     <label htmlFor="ice" className="form-label">Cold Drinks/Ice cream</label>
                     <CreatableSelect isMulti isClearable options={colourOptions}
                         styles={{
-                        control: (baseStyles, state) => ({
+                        control: (baseStyles) => ({ //, state
                         ...baseStyles,
                         backgroundColor: '#212529',
                         borderColor : '#495057'
