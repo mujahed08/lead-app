@@ -3,15 +3,7 @@ import { getLeads } from "../../api/getleads";
 
 export default () => {
   const [leads, setLeads] = useState<any>([]);
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,23 +18,11 @@ export default () => {
   }, []);
   console.log(leads);
 
-  function dateFormat(date: any) {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDay();
-    const d = `${day}-${month}-${year}`;
-    return d;
+  const formatDate = (datetime:any) => {
+    let date = new Date(datetime);
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString()
   }
 
-  function timeFormat(date: any) {
-    const time = date.toLocaleTimeString();
-
-    return time;
-  }
-  function dayFormat(date: any) {
-    const day = date.getDay();
-    return days[day];
-  }
   return (
     <div className="container-fluid my-4">
       <ul className="nav nav-tabs">
@@ -60,12 +40,12 @@ export default () => {
               <div className="card-body">
                 <h5 className="card-title">#{lead.id}</h5>
                 <h6 className="card-subtitle mb-2 text-body-secondary">
-                  <span>{lead?.created_on.substring(0, 19)}</span>
+                  <span>{formatDate(lead?.created_on)}</span>
                 </h6>
               </div>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
-                  <label htmlFor="route-name ">
+                  <label htmlFor="route-name">
                     <span className="bi bi-shop text-primary"></span><span className="ms-2 text-primary">Route Name</span> 
                     </label>
                   <p>
@@ -73,14 +53,22 @@ export default () => {
                   </p>
                 </li>
                 <li className="list-group-item">
-                  <label htmlFor="route-name">
+                  <label htmlFor="retailer">
+                    <span className="bi bi-shop text-primary"></span><span className="ms-2 text-primary">Retailer</span> 
+                    </label>
+                  <p>
+                    <strong className=" "><span className="ms-1 ">{lead.retailer}</span></strong>
+                  </p>
+                </li>
+                <li className="list-group-item">
+                  <label htmlFor="location">
                     <span className="bi bi-geo-alt-fill text-primary "></span><span className="ms-1 text-primary"> Location</span></label>
                   <p>
                     <strong>{lead._location}</strong>
                   </p>
                 </li>
                 <li className="list-group-item">
-                  <label htmlFor="route-name">
+                  <label htmlFor="phone_no">
                     <span className="bi bi-telephone-fill text-primary"></span>
                    <span className="ms-2 text-primary">Phone Number</span> </label>
                   <p>
@@ -88,7 +76,7 @@ export default () => {
                   </p>
                 </li>
                 <li className="list-group-item">
-                  <label htmlFor="route-name">
+                  <label htmlFor="products">
                     <span className="bi bi-cart-check-fill text-primary"></span>
                    <span className="ms-2 text-primary">Cold drinks/Ice cream</span> </label>
                   <p>

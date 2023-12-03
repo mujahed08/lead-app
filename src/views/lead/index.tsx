@@ -19,6 +19,7 @@ interface Coldrinks {
 
 export default () => {
     const navigate = useNavigate();
+    const [retailer, setRetailer] = useState<string>('')
 
   const [options, setOptions] = useState<Option[]>(routeNames);
   const [locations, setLoactions] = useState<Location[]>(locationNames);
@@ -29,15 +30,18 @@ export default () => {
   const [locationName, setLocationName] = useState<string>('')
   const [productList, setProductList] = useState<Coldrinks[]>([]);
 
-  const handleChangeRoute = ( newValue:any, actionMeta: { action: string } ) => {
+  const handleChangeRetailer = ( newValue:any, actionMeta: { action: string } ) => {
     if (actionMeta.action === "create-option" && newValue) {
       const newOption: Option = {
         value: newValue.value,
         label: newValue.label || "",
       };
       setOptions([...options, newOption]);
+    } else if(actionMeta.action === "clear") {
+        setRetailer('')
+        return;
     }
-    setRouteName(newValue.value)
+    setRetailer(newValue.value)
   };
 
   const handleChangeLocation = ( newValue:any, actionMeta: { action: string } ) => {
@@ -47,6 +51,9 @@ export default () => {
         label: newValue.label || "",
       };
       setLoactions([...locations, newLocation]);
+    } else if(actionMeta.action === "clear") {
+        setLocationName('')
+        return;
     }
     setLocationName(newValue.value)
   };
@@ -58,6 +65,9 @@ export default () => {
         label: newValue.label || "",
       };
       setProducts([...products, newColdrink]);
+    } else if(actionMeta.action === "clear") {
+        setProductList([]);
+        return;
     }
     let list = newValue.map((prod:any) => prod.value)
     setProductList(list);
@@ -67,10 +77,11 @@ export default () => {
     e.preventDefault();
     const response = await leadCreate({
         route_name: routeName,
+        retailer: retailer,
         _location: locationName,
         phone_no: mobile,
         remarks: feedback,
-        products: productList,
+        products: productList
     });
     if (response.status == 200) {
       navigate("/leads");
@@ -93,20 +104,25 @@ export default () => {
           noValidate
           onSubmit={handleSubmit}
         >
-          <div className="form-floating">
-            <CreatableSelect
-              isClearable
-              options={options}
-              // value={options}
-              onChange={handleChangeRoute}
-              placeholder="Create Your Route"
+            <div className="form-floating">
+                <select onChange={e => setRouteName(e.target.value)} className="form-select" id="floatingSelect" aria-label="Floating label select example">
+                    <option value="">Select ...</option>
+                    <option value="DARGA RD">DARGA RD</option>
+                    <option value="VIDYA NGR /MADINA PATTY">VIDYA NGR /MADINA PATTY</option>
+                    <option value="WANGI RD/BASMAT RD">WANGI RD/BASMAT RD</option>
+                </select>
+                <label htmlFor="floatingSelect">Route Name</label>
+            </div>
+          <div>
+            <label htmlFor="retail" className="form-label">Retailer</label>
+            <CreatableSelect isClearable options={options}
+              onChange={handleChangeRetailer} placeholder="Select ..."
               styles={{
                 control: (baseStyles) => ({
                   ...baseStyles,
                   backgroundColor: "#212529",
                   borderColor: "#495057",
-                  color: "#fff !important",
-                  padding: "10px",
+                  color: "#fff !important"
                 }),
                 option: (styles) => ({
                   ...styles,
@@ -134,19 +150,19 @@ export default () => {
               }}
             />
           </div>
-          <div className="form-floating">
+          <div>
+            <label htmlFor="location" className="form-label">Location</label>
             <CreatableSelect
               isClearable
               options={locations}
               onChange={handleChangeLocation}
-              placeholder="Location"
+              placeholder="Select ..."
               styles={{
                 control: (baseStyles) => ({
                   ...baseStyles,
                   backgroundColor: "#212529",
                   borderColor: "#495057",
-                  color: "#fff !important",
-                  padding: "10px",
+                  color: "#fff !important"
                 }),
                 option: (styles) => ({
                   ...styles,
@@ -211,8 +227,7 @@ export default () => {
                 control: (baseStyles) => ({
                   ...baseStyles,
                   color: "#fff !important",
-                  backgroundColor: "#212529",
-                  padding: "10px",
+                  backgroundColor: "#212529"
                 }),
                 option: (styles) => ({
                   ...styles,
@@ -231,12 +246,12 @@ export default () => {
                 multiValue: (base) => {
                   return {
                     ...base,
-                    color: "#fff",
+                    color: "#dc3545",
                   };
                 },
                 multiValueLabel: (base) => ({
                   ...base,
-                  color: "#fff",
+                  color: "#0f5132",
                 }),
                 singleValue: (styles) => ({
                   ...styles,
@@ -252,6 +267,7 @@ export default () => {
           </div>
         </form>
       </div>
+      <div className="col-xs-12" style={{'height' : '13rem'}}></div>
     </div>
   );
 };
