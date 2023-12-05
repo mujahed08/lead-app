@@ -55,7 +55,7 @@ export default () => {
                 </li>
                 <li className="list-group-item">
                   <label htmlFor="retailer">
-                    <span className="bi bi-shop text-primary"></span><span className="ms-2 text-primary">Retailer</span> 
+                    <span className="bi bi-buildings text-primary"></span><span className="ms-2 text-primary">Retailer</span> 
                     </label>
                   <p>
                     <strong className=" "><span className="ms-1 ">{lead.retailer}</span></strong>
