@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getLeads } from "../../api/getleads";
+import { Link } from "react-router-dom";
 
 export default () => {
   const [leads, setLeads] = useState<any>([]);
@@ -94,7 +95,8 @@ export default () => {
 
                 <button className="btn btn-sm btn-warning">Edit</button>
                 <button className="btn btn-sm btn-success ms-1">Done</button>
-                <button className="btn btn-sm btn-danger ms-1">Delete</button>
+                <Link className="btn btn-sm btn-danger ms-1" to={`/lead/remove/${lead.id}`}>Delete</Link>
+
               </div>
             </div>
           </>
