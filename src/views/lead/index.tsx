@@ -104,17 +104,18 @@ export default () => {
           noValidate
           onSubmit={handleSubmit}
         >
-            <div className="form-floating">
-                <select onChange={e => setRouteName(e.target.value)} className="form-select" id="floatingSelect" aria-label="Floating label select example">
+             <div className="">{/* className= formfloting */}
+            <label htmlFor="floatingSelect"><span className="bi bi-shop text-primary"></span><span className="ms-2 text-primary">Route Name</span> </label>
+                <select onChange={e => setRouteName(e.target.value)} className="form-select p-3" id="floatingSelect" aria-label="Floating label select example">
                     <option value="">Select ...</option>
                     <option value="DARGA RD">DARGA RD</option>
                     <option value="VIDYA NGR /MADINA PATTY">VIDYA NGR /MADINA PATTY</option>
                     <option value="WANGI RD/BASMAT RD">WANGI RD/BASMAT RD</option>
                 </select>
-                <label htmlFor="floatingSelect">Route Name</label>
+                
             </div>
           <div>
-            <label htmlFor="retail" className="form-label">Retailer</label>
+            <label htmlFor="retail" className="form-label mb-0"><span className="bi bi-buildings text-primary"></span><span className="ms-2 text-primary">Retailer</span> </label>
             <CreatableSelect isClearable options={options}
               onChange={handleChangeRetailer} placeholder="Select ..."
               styles={{
@@ -122,7 +123,8 @@ export default () => {
                   ...baseStyles,
                   backgroundColor: "#212529",
                   borderColor: "#495057",
-                  color: "#fff !important"
+                  color: "#fff !important",
+                  padding:'10px'
                 }),
                 option: (styles) => ({
                   ...styles,
@@ -151,7 +153,7 @@ export default () => {
             />
           </div>
           <div>
-            <label htmlFor="location" className="form-label">Location</label>
+            <label htmlFor="location" className="form-label mb-0"><span className="bi bi-geo-alt-fill text-primary "></span><span className="ms-2 text-primary">Location</span> </label>
             <CreatableSelect
               isClearable
               options={locations}
@@ -162,7 +164,10 @@ export default () => {
                   ...baseStyles,
                   backgroundColor: "#212529",
                   borderColor: "#495057",
-                  color: "#fff !important"
+                  color: "#fff !important",
+                  padding:'10px',
+                  marginBottom:"5px"
+
                 }),
                 option: (styles) => ({
                   ...styles,
@@ -190,33 +195,37 @@ export default () => {
               }}
             />
           </div>
-          <div className="form-floating">
+          <div className=" mb-2"> {/*classNAme: form-floating */}
+          <label htmlFor="phone_noText" className="form-label mb-0">
+          <span className="bi bi-telephone-fill text-primary"></span>
+          <span className="ms-1 text-primary"> Phone Number</span> 
+            </label>
             <input
               type="text"
-              className="form-control"
+              className="form-control p-3 text-light"
               id="phone_noText"
-              placeholder="placeholder"
+              placeholder="Phone Number"
               onChange={(e) => setMobile(e.target.value)}
             />
-            <label htmlFor="phone_noText" className="form-label ms-2">
-              Phone Number
-            </label>
+          
           </div>
-          <div className="form-floating">
+          <div className="">{/*classNAme: form-floating */}
+          <label htmlFor="feedbackText" className="form-label mb-0 ">
+            <span className="bi bi-card-checklist text-primary"></span>
+            <span className="ms-2 text-primary"> Feedback/Reason</span> 
+            </label>
             <input
               type="text"
-              className="form-control"
+              className="form-control p-3 text-light"
               id="feedbackText"
-              placeholder="placeholder"
+              placeholder="Feedback/Reason"
               onChange={(e) => setFeedback(e.target.value)}
             />
-            <label htmlFor="feedbackText" className="form-label ms-2">
-              Feedback/Reason
-            </label>
           </div>
           <div>
-            <label htmlFor="ice" className="form-label">
-              Cold Drinks/Ice cream
+            <label htmlFor="ice" className="form-label mb-0">
+            <span className="bi bi-cart-check-fill text-primary"></span>
+            <span className="ms-2 text-primary">Cold Drinks/Ice cream</span>
             </label>
             <CreatableSelect
               isMulti
@@ -227,7 +236,9 @@ export default () => {
                 control: (baseStyles) => ({
                   ...baseStyles,
                   color: "#fff !important",
-                  backgroundColor: "#212529"
+                  backgroundColor: "#212529",
+                  borderColor: "#495057",
+                  padding:'10px'
                 }),
                 option: (styles) => ({
                   ...styles,
