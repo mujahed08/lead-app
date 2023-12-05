@@ -64,7 +64,7 @@ export const locationNames = [
  
 
 
-export const productNames = [
+export const productNames:any[] = [
     // {"value" : "Jeera - 10", "label" : "Jeeera - 10"},
     // {"value" : "Jeera - 15", "label" : "Jeeera - 15"},
     // {"value" : "Jeera - 20", "label" : "Jeeera - 20"},
