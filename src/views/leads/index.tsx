@@ -93,7 +93,7 @@ export default () => {
                 </h6>
                 <p className="card-text">{lead.remarks}</p>
 
-                <button className="btn btn-sm btn-warning">Edit</button>
+                <Link to={`/lead/edit/${lead.id}`} className="btn btn-sm btn-warning">Edit</Link>
                 <button className="btn btn-sm btn-success ms-1">Done</button>
                 <Link className="btn btn-sm btn-danger ms-1" to={`/lead/remove/${lead.id}`}>Delete</Link>
 
