@@ -88,30 +88,15 @@ export const locationNames = [
     {"value" : "ZAMEER T POINT", "label" : "ZAMEER T POINT" },
 ]
 
- 
 
+const products:any[] = []
 
-export const productNames:any[] = [
-    // {"value" : "Jeera - 10", "label" : "Jeeera - 10"},
-    // {"value" : "Jeera - 15", "label" : "Jeeera - 15"},
-    // {"value" : "Jeera - 20", "label" : "Jeeera - 20"},
-    // {"value" : "LEMON - 10", "label" : "LEMON - 10"},
-    // {"value" : "LEMON - 15", "label" : "LEMON - 15"},
-    // {"value" : "LEMON - 20", "label" : "LEMON - 20"},
-    // {"value" : "COLA - 10", "label" : "COLA - 10"},
-    // {"value" : "COLA - 15", "label" : "COLA - 15"},
-    // {"value" : "COLA - 20", "label" : "COLA - 20"},
-    // {"value" : "APP.FIZZY - 10", "label" : "APP.FIZZY - 10"},
-    // {"value" : "APP.FIZZY - 15", "label" : "APP.FIZZY - 15"},
-    // {"value" : "APP.FIZZY - 20", "label" : "APP.FIZZY - 20"}
-       
-]
+let productArr = ['JEERA','LEMON', 'ORANGE', 'MANGO', 'MISTY', 'COLA',	'APP.FIZZY', 'M.TETRA']
 
-for(let i=1; i<=10; i++){
-    let productName1 = {'value':`Jeera-${i}`, 'label' : `Jeeera - ${i}`};
-    let productName2 = {'value':`LEMON-${i}`, 'label' : `LEMON - ${i}`};
-    let productName3 = {'value':`COLA-${i}`, 'label' : `COLA - ${i}`};
-    let productName4 = {'value':`APP.FIZZY-${i}`, 'label' : `APP.FIZZY - ${i}`};
-    productNames.push(productName1, productName2,productName3,productName4)
+productArr.forEach(product => {
+    for(let i=1; i<=10; i++) {
+        products.push({'value':`${product}-${i}`, 'label' : `${product} - ${i}`})
+    }
+})
 
-}
+export const productNames = products;

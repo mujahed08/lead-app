@@ -1,23 +1,46 @@
 import { useState, useEffect } from "react";
-import { getLeads } from "../../api/getleads";
 import { Link } from "react-router-dom";
+import { getLeads, justStatusUpdate } from "../../api/lead";
 
 export default () => {
+
+  const [tab, setTab] = useState<number>(0);
   const [leads, setLeads] = useState<any>([]);
   
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getLeads();
-        setLeads(data?.data?.data);
-      } catch (error) {
-        console.error("Error fetching leads:", error);
-      }
-    };
+  const fetchData = async (status:string, interval?:string) => {
+    try {
+      const data = await getLeads(status, interval);
+      setLeads(data?.data?.data);
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+    }
+  };
 
-    fetchData();
-  }, []);
+  useEffect(() => {
+    if(tab == 0 ) {
+      fetchData("New", "recent");
+    } else if(tab == 1) {
+      fetchData("Done");
+    }else if(tab == 2) {
+      fetchData("New", "7");
+    }
+    setLeads([])
+  }, [tab]);
   console.log(leads);
+
+  const doneHandler = async (lead:any) => {
+    const response = await justStatusUpdate({id : lead.id, _status : 'Done'});
+    if(response.status == 200 ) {
+      setTab(1)
+    }
+  }
+
+  const undoHandler = async (lead:any) => {
+    const response = await justStatusUpdate({id : lead.id, _status : 'New'});
+    if(response.status == 200 ) {
+      setTab(0)
+    }
+  }
 
   const formatDate = (datetime:any) => {
     let date = new Date(datetime);
@@ -28,9 +51,13 @@ export default () => {
     <div className="container-fluid my-4">
       <ul className="nav nav-tabs">
         <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="/lead">
-            Leads
-          </a>
+          <button onClick={()=>setTab(0)} className={`nav-link ${tab == 0 ? "active" : ""}`}>Leads (Recent)</button>
+        </li>
+        <li className="nav-item">
+          <button onClick={()=>setTab(1)} className={`nav-link ${tab == 1 ? "active" : ""}`}>Done</button>
+        </li>
+        <li className="nav-item">
+          <button onClick={()=>setTab(2)} className={`nav-link ${tab == 2 ? "active" : ""}`}>7 Days Ago</button>
         </li>
       </ul>
 
@@ -41,7 +68,7 @@ export default () => {
               <div className="card-body">
                 <h5 className="card-title">#{lead.id}</h5>
                 <h6 className="card-subtitle mb-2 text-body-secondary">
-                  <span>{formatDate(lead?.created_on)}</span>
+                  <span>{formatDate(lead?.updated_on)}</span>
                 </h6>
               </div>
               <ul className="list-group list-group-flush">
@@ -94,7 +121,8 @@ export default () => {
                 <p className="card-text">{lead.remarks}</p>
 
                 <button className="btn btn-sm btn-warning">Edit</button>
-                <button className="btn btn-sm btn-success ms-1">Done</button>
+                {tab == 0 ? <button onClick={() => doneHandler(lead)} className="btn btn-sm btn-success ms-1">Done</button>
+                : <button onClick={() => undoHandler(lead)} className="btn btn-sm btn-success ms-1">Undo</button> }
                 <Link className="btn btn-sm btn-danger ms-1" to={`/lead/remove/${lead.id}`}>Delete</Link>
 
               </div>
