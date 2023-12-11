@@ -29,6 +29,7 @@ export default () => {
   const [routeName, setRouteName] = useState<string>("");
   const [locationName, setLocationName] = useState<string>("");
   const [productList, setProductList] = useState<Coldrinks[]>([]);
+  const [error, setError] = useState<any>({});
 
   const handleChangeRetailer = (
     newValue: any,
@@ -82,20 +83,42 @@ export default () => {
     setProductList(list);
   };
 
+  const validateFeilds = () => {
+    const textErrors: any = {};
+    if (!routeName) {
+      textErrors.routeName = "*Route is Required !";
+    }
+    if (!retailer) {
+      textErrors.retailer = "*Retailer is Required !";
+    }
+    if (!locationName) {
+      textErrors.locationName = "*Location  is Required !";
+    }
+    if (!mobile) {
+      textErrors.mobile = "*Mobile Number is Required !";
+    }
+    if (!feedback) {
+      textErrors.feedback = "*Remark is Required !";
+    }
+    if (productList.length === 0) {
+      textErrors.productList = "*Products is Required !";
+    }
+    setError(textErrors);
+    return Object.keys(textErrors).length === 0;
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const response = await leadCreate({
-      route_name: routeName,
-      retailer: retailer,
-      _location: locationName,
-      phone_no: mobile,
-      remarks: feedback,
-      products: productList,
-    });
-
-    if (response.status == 200) {
+    if (validateFeilds()) {
+      await leadCreate({
+        route_name: routeName,
+        retailer: retailer,
+        _location: locationName,
+        phone_no: mobile,
+        remarks: feedback,
+        products: productList,
+      });
       navigate("/leads");
-      console.log(response);
     }
   };
 
@@ -134,6 +157,7 @@ export default () => {
               <option value="WANGI RD/BASMAT RD">WANGI RD/BASMAT RD</option>
             </select>
           </div>
+          {error.routeName && <p className="text-danger m-0 fs-6">{error.routeName}</p>}
           <div>
             <label htmlFor="retail" className="form-label mb-0">
               <span className="bi bi-buildings text-primary"></span>
@@ -178,6 +202,7 @@ export default () => {
               }}
             />
           </div>
+          {error.retailer && <p className="text-danger m-0 fs-6">{error.retailer}</p>}
           <div>
             <label htmlFor="location" className="form-label mb-0">
               <span className="bi bi-geo-alt-fill text-primary "></span>
@@ -223,6 +248,7 @@ export default () => {
               }}
             />
           </div>
+          {error.locationName && <p className="text-danger m-0 fs-6">{error.locationName}</p>}
           <div className=" mb-2">
             {" "}
             {/*classNAme: form-floating */}
@@ -238,6 +264,7 @@ export default () => {
               onChange={(e) => setMobile(e.target.value)}
             />
           </div>
+          {error.mobile && <p className="text-danger m-0 fs-6">{error.mobile}</p>}
           <div className="">
             {/*classNAme: form-floating */}
             <label htmlFor="feedbackText" className="form-label mb-0 ">
@@ -252,6 +279,7 @@ export default () => {
               onChange={(e) => setFeedback(e.target.value)}
             />
           </div>
+          {error.feedback && <p className="text-danger m-0 fs-6">{error.feedback}</p>}
           <div>
             <label htmlFor="ice" className="form-label mb-0">
               <span className="bi bi-cart-check-fill text-primary"></span>
@@ -301,6 +329,7 @@ export default () => {
               }}
             />
           </div>
+          {error.productList && <p className="text-danger m-0 fs-6">{error.productList}</p>}
           <div>
             <button className="btn btn-primary" type="submit">
               Submit
