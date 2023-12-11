@@ -4,6 +4,7 @@ import { host } from "./constant";
 const createLeadUrl = `${host}/api/v2/lead`;
 const getLeadUrl = `${host}/api/v2/lead`;
 const removeLeadUrl = `${host}/api/v2/lead`;
+const putLeadUrl = `${host}/api/v2/lead`;
 
 export const getAccessToken = () => {
   let str: any = localStorage.getItem("user");
@@ -44,4 +45,28 @@ export const removeLead = async (id: number) => {
   return axios.delete(`${removeLeadUrl}?id=${id}`, {
     headers: headers,
   });
+};
+
+export const justStatusUpdate = async (payload: any) => {
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getAccessToken()}`,
+  };
+
+  return axios.put(`${putLeadUrl}?action=justStatusUpdate`, payload, {
+    headers: headers,
+  });
+};
+
+
+export const getLeads = async (status:string, interval?:string) => {
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getAccessToken()}`,
+  };
+
+  let apiUrl = interval ? `${getLeadUrl}?status=${status}&interval=${interval}` : `${getLeadUrl}?status=${status}`
+  return axios.get(apiUrl, {
+    headers: headers,
+  })
 };
