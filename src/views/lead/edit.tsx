@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { routeNames, locationNames, productNames } from "../../data/index";
-import { getLead } from "../../api/lead";
+import { getLead,leadUpdate } from "../../api/lead";
 
 interface Option {
   value: string;
@@ -18,9 +18,9 @@ interface Coldrinks {
 }
 
 export default () => {
-  const [options, setOptions] = useState<Option[]>(routeNames);
-  const [locations, setLoactions] = useState<Location[]>(locationNames);
-  const [products, setProducts] = useState<Coldrinks[]>(productNames);
+  const [options] = useState<Option[]>(routeNames);
+  const [locations] = useState<Location[]>(locationNames);
+  const [products] = useState<Coldrinks[]>(productNames);
 
   const [editLead, setEditLead] = useState<any>(null);
 
@@ -81,11 +81,19 @@ const handleProductChange = (selectedOpts:any) => {
 
 }
 
-const handleEdit = () => {
+const handleEdit = async() => {
   console.log('EditLead',editLead)
+
+  const response = await leadUpdate(editLead);
+  if(response.status == 200){
+    navigate('/leads')
+  }
+
 }
   useEffect(() => {
-    getEditid(parseInt(id));
+    if(id){
+      getEditid(parseInt(id));
+    }
   }, []);
 
   return (

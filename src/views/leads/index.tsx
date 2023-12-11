@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import { getLeads, justStatusUpdate } from "../../api/lead";
 
 export default () => {
-
   const [tab, setTab] = useState<number>(0);
   const [leads, setLeads] = useState<any>([]);
-  
-  const fetchData = async (status:string, interval?:string) => {
+
+  const fetchData = async (status: string, interval?: string) => {
     try {
       const data = await getLeads(status, interval);
       setLeads(data?.data?.data);
@@ -17,47 +16,62 @@ export default () => {
   };
 
   useEffect(() => {
-    if(tab == 0 ) {
+    if (tab == 0) {
       fetchData("New", "recent");
-    } else if(tab == 1) {
+    } else if (tab == 1) {
       fetchData("Done");
-    }else if(tab == 2) {
+    } else if (tab == 2) {
       fetchData("New", "7");
     }
-    setLeads([])
+    setLeads([]);
   }, [tab]);
   console.log(leads);
 
-  const doneHandler = async (lead:any) => {
-    const response = await justStatusUpdate({id : lead.id, _status : 'Done'});
-    if(response.status == 200 ) {
-      setTab(1)
+  const doneHandler = async (lead: any) => {
+    const response = await justStatusUpdate({ id: lead.id, _status: "Done" });
+    if (response.status == 200) {
+      setTab(1);
     }
-  }
+  };
 
-  const undoHandler = async (lead:any) => {
-    const response = await justStatusUpdate({id : lead.id, _status : 'New'});
-    if(response.status == 200 ) {
-      setTab(0)
+  const undoHandler = async (lead: any) => {
+    const response = await justStatusUpdate({ id: lead.id, _status: "New" });
+    if (response.status == 200) {
+      setTab(0);
     }
-  }
+  };
 
-  const formatDate = (datetime:any) => {
+  const formatDate = (datetime: any) => {
     let date = new Date(datetime);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString()
-  }
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+  };
 
   return (
     <div className="container-fluid my-4">
       <ul className="nav nav-tabs">
         <li className="nav-item">
-          <button onClick={()=>setTab(0)} className={`nav-link ${tab == 0 ? "active" : ""}`}>Leads (Recent)</button>
+          <button
+            onClick={() => setTab(0)}
+            className={`nav-link ${tab == 0 ? "active" : ""}`}
+          >
+            Leads (Recent)
+          </button>
         </li>
         <li className="nav-item">
-          <button onClick={()=>setTab(1)} className={`nav-link ${tab == 1 ? "active" : ""}`}>Done</button>
+          <button
+            onClick={() => setTab(1)}
+            className={`nav-link ${tab == 1 ? "active" : ""}`}
+          >
+            Done
+          </button>
         </li>
         <li className="nav-item">
-          <button onClick={()=>setTab(2)} className={`nav-link ${tab == 2 ? "active" : ""}`}>7 Days Ago</button>
+          <button
+            onClick={() => setTab(2)}
+            className={`nav-link ${tab == 2 ? "active" : ""}`}
+          >
+            7 Days Ago
+          </button>
         </li>
       </ul>
 
@@ -74,23 +88,31 @@ export default () => {
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
                   <label htmlFor="route-name">
-                    <span className="bi bi-shop text-primary"></span><span className="ms-2 text-primary">Route Name</span> 
-                    </label>
+                    <span className="bi bi-shop text-primary"></span>
+                    <span className="ms-2 text-primary">Route Name</span>
+                  </label>
                   <p>
-                    <strong className=" "><span className="ms-1 ">{lead.route_name}</span></strong>
+                    <strong className=" ">
+                      <span className="ms-1 ">{lead.route_name}</span>
+                    </strong>
                   </p>
                 </li>
                 <li className="list-group-item">
                   <label htmlFor="retailer">
-                    <span className="bi bi-buildings text-primary"></span><span className="ms-2 text-primary">Retailer</span> 
-                    </label>
+                    <span className="bi bi-buildings text-primary"></span>
+                    <span className="ms-2 text-primary">Retailer</span>
+                  </label>
                   <p>
-                    <strong className=" "><span className="ms-1 ">{lead.retailer}</span></strong>
+                    <strong className=" ">
+                      <span className="ms-1 ">{lead.retailer}</span>
+                    </strong>
                   </p>
                 </li>
                 <li className="list-group-item">
                   <label htmlFor="location">
-                    <span className="bi bi-geo-alt-fill text-primary "></span><span className="ms-1 text-primary"> Location</span></label>
+                    <span className="bi bi-geo-alt-fill text-primary "></span>
+                    <span className="ms-1 text-primary"> Location</span>
+                  </label>
                   <p>
                     <strong>{lead._location}</strong>
                   </p>
@@ -98,7 +120,8 @@ export default () => {
                 <li className="list-group-item">
                   <label htmlFor="phone_no">
                     <span className="bi bi-telephone-fill text-primary"></span>
-                   <span className="ms-2 text-primary">Phone Number</span> </label>
+                    <span className="ms-2 text-primary">Phone Number</span>{" "}
+                  </label>
                   <p>
                     <strong>{lead.phone_no}</strong>
                   </p>
@@ -106,7 +129,10 @@ export default () => {
                 <li className="list-group-item">
                   <label htmlFor="products">
                     <span className="bi bi-cart-check-fill text-primary"></span>
-                   <span className="ms-2 text-primary">Cold drinks/Ice cream</span> </label>
+                    <span className="ms-2 text-primary">
+                      Cold drinks/Ice cream
+                    </span>{" "}
+                  </label>
                   <p>
                     {JSON.parse(lead?.products)?.map((it: any) => (
                       <span className="badge text-bg-success ms-2">{it}</span>
@@ -120,11 +146,33 @@ export default () => {
                 </h6>
                 <p className="card-text">{lead.remarks}</p>
 
-                <button className="btn btn-sm btn-warning">Edit</button>
-                {tab == 0 ? <button onClick={() => doneHandler(lead)} className="btn btn-sm btn-success ms-1">Done</button>
-                : <button onClick={() => undoHandler(lead)} className="btn btn-sm btn-success ms-1">Undo</button> }
-                <Link className="btn btn-sm btn-danger ms-1" to={`/lead/remove/${lead.id}`}>Delete</Link>
-
+                <Link
+                  className="btn btn-sm btn-warning"
+                  to={`/lead/edit/${lead.id}`}
+                >
+                  Edit
+                </Link>
+                {tab == 0 ? (
+                  <button
+                    onClick={() => doneHandler(lead)}
+                    className="btn btn-sm btn-success ms-1"
+                  >
+                    Done
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => undoHandler(lead)}
+                    className="btn btn-sm btn-success ms-1"
+                  >
+                    Undo
+                  </button>
+                )}
+                <Link
+                  className="btn btn-sm btn-danger ms-1"
+                  to={`/lead/remove/${lead.id}`}
+                >
+                  Delete
+                </Link>
               </div>
             </div>
           </>

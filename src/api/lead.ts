@@ -58,6 +58,19 @@ export const justStatusUpdate = async (payload: any) => {
   });
 };
 
+export const leadUpdate = async (payload: any) => {
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getAccessToken()}`,
+  };
+
+  return axios.put(`${putLeadUrl}`, payload, {
+    headers: headers,
+  });
+};
+
+
+
 
 export const getLeads = async (status:string, interval?:string) => {
   const headers = {
